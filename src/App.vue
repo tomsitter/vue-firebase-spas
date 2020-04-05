@@ -1,13 +1,18 @@
 <template>
   <div id="app">
     <Navigation :user="user" @logout="logout" />
-    <router-view class="container" :user="user" @logout="logout"/>
+    <router-view 
+        class="container" 
+        :user="user" 
+        @logout="logout"
+        @addMeeting="addMeeting"
+    />
   </div>
 </template>
 
 <script>
 import Navigation from "@/components/Navigation.vue";
-import "./db.js";
+import db from "./db.js";
 import Firebase from "firebase";
 export default {
     name: "App",
@@ -24,12 +29,21 @@ export default {
                 this.user = null;
                 this.$router.push("login");
             });
+        },
+        addMeeting: function(payload) {
+            db.collection("users")
+            .doc(this.user.uid)
+            .collection("meetings")
+            .add({
+                name: payload,
+                createdAt: Firebase.firestore.FieldValue.serverTimestamp()
+            });
         }
     },
     mounted() {
         Firebase.auth().onAuthStateChanged(user => {
             if (user) {
-                this.user = user.displayName;
+                this.user = user;
             }
         });
     },
