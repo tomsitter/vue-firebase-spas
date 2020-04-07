@@ -113,6 +113,9 @@ export default {
 </script>
 
 <style lang="scss">
-$primary: #05b2dd;
+$primary: #275d79;
+$danger: #f7a41a;
+$text-primary: #dc700e;
+
 @import "node_modules/bootstrap/scss/bootstrap";
 </style>
